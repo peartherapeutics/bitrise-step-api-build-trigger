@@ -50,13 +50,8 @@ is_skippable: false
 run_if: ""
 
 deps:
-  brew:
-  - name: git
-  - name: wget
-  apt_get:
-  - name: git
-  - name: wget
-
+  brew: []
+  apt_get: []
 
 toolkit:
   go:
@@ -64,24 +59,77 @@ toolkit:
 
 
 inputs:
-  - example_step_input: Default Value - you can leave this empty if you want to
+  - bitrise_api_token: "$BITRISE_API_TOKEN"
     opts:
-      title: "Example Step Input"
-      summary: Summary. No more than 2-3 sentences.
-      description: |
-        Description of this input.
+      title: "Bitrise.io API Token"
+      summary: Personal Access Token for bitrise.io API.
+      description: |-
+        Personal Access Token for bitrise.io API.
 
-        Can be Markdown formatted text.
+        See [The Authentication Article on the devcenter](https://devcenter.bitrise.io/api/authentication/) for instructions on how to obtain a token.
       is_expand: true
       is_required: true
-      value_options: []
+      is_sensitive: true
+  - triggered_app_slug: "$BITRISE_API_BUILD_TRIGGER_STEP_APP_SLUG"
+    opts:
+      title: "Triggered App Slug"
+      summary: App slug for the build you want to trigger on bitrise.io.
+      description: ""
+      is_expand: true
+      is_required: true
+  - triggered_branch: "$BITRISE_API_BUILD_TRIGGER_STEP_BRANCH"
+    opts:
+      title: "Triggered Branch"
+      summary: Branch name for the build you want to trigger.
+      description: ""
+      is_expand: true
+      is_required: true
+  - triggered_workflow: "$BITRISE_API_BUILD_TRIGGER_STEP_TRIGGERED_WORKFLOW"
+    opts:
+      title: "Triggered Workflow ID"
+      summary: Workflow ID (name) you want to trigger. If empty, trigger map will be used instead.
+      description: |-
+        Workflow ID (name) you want to trigger. If empty, trigger map will be used instead.
+
+        See [Setting a workflow for the build on devcenter](https://devcenter.bitrise.io/api/build-trigger/#setting-a-workflow-for-the-build).
+      is_expand: true
+      is_required: false
+  - trigger_message: "$BITRISE_API_BUILD_TRIGGER_STEP_MESSAGE"
+    opts:
+      title: "Triggered Build Message"
+      summary: Message for the build you want to trigger.
+      description: ""
+      is_expand: true
+      is_required: false
+  - verbose: "false"
+    opts:
+      title: Enable verbose logging
+      summary: "Enable verbose log option for better debug"
+      description: "Enable verbose log option for better debug"
+      is_expand: true
+      is_required: true
+      value_options:
+        - "true"
+        - "false"
 
 outputs:
-  - EXAMPLE_STEP_OUTPUT:
+  - BITRISE_API_BUILD_TRIGGER_STEP_RESULT_BUILD_SLUG:
     opts:
-      title: "Example Step Output"
-      summary: Summary. No more than 2-3 sentences.
-      description: |
-        Description of this output.
-
-        Can be Markdown formatted text.
+      title: "Resulting Build Slug"
+      summary: Build slug of the triggered build.
+      description: ""
+  - BITRISE_API_BUILD_TRIGGER_STEP_RESULT_BUILD_NUMBER:
+    opts:
+      title: "Resulting Build Number"
+      summary: Build number of the triggered build.
+      description: ""
+  - BITRISE_API_BUILD_TRIGGER_STEP_RESULT_BUILD_URL:
+    opts:
+      title: "Resulting Build URL"
+      summary: URL of the triggered build.
+      description: ""
+  - BITRISE_API_BUILD_TRIGGER_STEP_RESULT_TRIGGERED_WORKFLOW:
+    opts:
+      title: "Resulting triggered workflow"
+      summary: Workflow name that was triggered.
+      description: ""
