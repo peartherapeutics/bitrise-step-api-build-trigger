@@ -5,6 +5,8 @@ import (
 	"os"
 	"time"
 
+	"github.com/go-openapi/strfmt"
+
 	"github.com/bitrise-io/go-utils/log"
 	"github.com/bitrise-tools/go-steputils/stepconf"
 	"github.com/bitrise-tools/go-steputils/tools"
@@ -55,22 +57,29 @@ func main() {
 				CommitMessage: cfg.Message,
 				Branch:        cfg.Branch,
 			},
+			HookInfo: &models.V0BuildTriggerParamsHookInfo{
+				Type: "bitrise",
+			},
 		},
 	}
 	buildTriggerParams.SetTimeout(60 * time.Second)
+	err := buildTriggerParams.BuildParams.Validate(strfmt.Default)
+	if err != nil {
+		failf("%s", err)
+	}
 
 	// Trigger build
 	resp, err := bitriseClient.Builds.BuildTrigger(&buildTriggerParams, apiKeyQueryAuth)
 
 	if err != nil {
-		failf("%s", err)
+		log.Errorf("%s", err)
 	}
-	fmt.Printf("%#v\n", resp.Payload)
+	log.Infof("%#v\n", resp.Payload)
 	// END
 
 	// Output section
-	if err := tools.ExportEnvironmentWithEnvman("VERBOSE", "test exported value"); err != nil {
-		failf("Failed to generate output - %s", "VERBOSE")
+	if err := tools.ExportEnvironmentWithEnvman("BITRISE_API_BUILD_TRIGGER_STEP_RESULT_SLUG", resp.Payload.BuildSlug); err != nil {
+		failf("Failed to generate output - %s, %s", "BITRISE_API_BUILD_TRIGGER_STEP_RESULT_SLUG", err)
 	}
 
 	// You can find more usage examples on envman's GitHub page
