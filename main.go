@@ -21,7 +21,7 @@ import (
 
 var debugMode bool
 
-// Config ...
+// Config object mapping to bitrise step inputs
 type Config struct {
 	AppSlug  string          `env:"triggered_app_slug,required"`
 	Token    stepconf.Secret `env:"bitrise_api_token,required"`
@@ -52,6 +52,7 @@ func main() {
 	// Create auth provider
 	apiKeyQueryAuth := httptransport.APIKeyAuth("Authorization", "header", string(cfg.Token))
 
+	// Create and validate request parameters
 	buildTriggerParams := builds.BuildTriggerParams{
 		AppSlug: cfg.AppSlug,
 		BuildParams: &models.V0BuildTriggerParams{
