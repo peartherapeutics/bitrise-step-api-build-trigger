@@ -74,7 +74,7 @@ func main() {
 	if err != nil {
 		log.Errorf("%s", err)
 	}
-	log.Infof("%#v\n", resp.Payload)
+	log.Infof("\nSuccessfully started build: %#v\n", resp.Payload)
 	// END
 
 	// Output section
