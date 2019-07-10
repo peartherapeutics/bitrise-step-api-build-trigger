@@ -215,7 +215,7 @@ BuildTrigger triggers a new build
 
 Trigger a new build. Specify an app slug and at least one parameter out of three: a git tag or git commit hash, a branch, or a workflow ID. You can also set specific parameters for Pull Request builds and define additional environment variables for your build. [Check out our detailed guide](https://devcenter.bitrise.io/api/build-trigger/).
 */
-func (a *Client) BuildTrigger(params *BuildTriggerParams, authInfo runtime.ClientAuthInfoWriter) (*BuildTriggerOK, error) {
+func (a *Client) BuildTrigger(params *BuildTriggerParams, authInfo runtime.ClientAuthInfoWriter) (*BuildTriggerCreated, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewBuildTriggerParams()
@@ -237,7 +237,7 @@ func (a *Client) BuildTrigger(params *BuildTriggerParams, authInfo runtime.Clien
 	if err != nil {
 		return nil, err
 	}
-	return result.(*BuildTriggerOK), nil
+	return result.(*BuildTriggerCreated), nil
 
 }
 

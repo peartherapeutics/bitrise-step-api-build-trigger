@@ -25,8 +25,8 @@ type BuildTriggerReader struct {
 func (o *BuildTriggerReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
 
-	case 200:
-		result := NewBuildTriggerOK()
+	case 201:
+		result := NewBuildTriggerCreated()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
@@ -65,24 +65,24 @@ func (o *BuildTriggerReader) ReadResponse(response runtime.ClientResponse, consu
 	}
 }
 
-// NewBuildTriggerOK creates a BuildTriggerOK with default headers values
-func NewBuildTriggerOK() *BuildTriggerOK {
-	return &BuildTriggerOK{}
+// NewBuildTriggerCreated creates a BuildTriggerCreated with default headers values
+func NewBuildTriggerCreated() *BuildTriggerCreated {
+	return &BuildTriggerCreated{}
 }
 
-/*BuildTriggerOK handles this case with default header values.
+/*BuildTriggerCreated handles this case with default header values.
 
-OK
+Created
 */
-type BuildTriggerOK struct {
+type BuildTriggerCreated struct {
 	Payload *models.V0BuildTriggerRespModel
 }
 
-func (o *BuildTriggerOK) Error() string {
-	return fmt.Sprintf("[POST /apps/{app-slug}/builds][%d] buildTriggerOK  %+v", 200, o.Payload)
+func (o *BuildTriggerCreated) Error() string {
+	return fmt.Sprintf("[POST /apps/{app-slug}/builds][%d] buildTriggerCreated  %+v", 201, o.Payload)
 }
 
-func (o *BuildTriggerOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+func (o *BuildTriggerCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	o.Payload = new(models.V0BuildTriggerRespModel)
 
