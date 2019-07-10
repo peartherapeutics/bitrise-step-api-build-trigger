@@ -1,0 +1,66 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "9RgKcLYIqvz1iL16l4KYbA7Tkwk=",
+			"path": "github.com/bitrise-io/go-utils/colorstring",
+			"revision": "10ba6612803187a89b6935f06a617e9e1cd9d2bf",
+			"revisionTime": "2019-06-21T15:06:08Z"
+		},
+		{
+			"checksumSHA1": "Xkrd+NYISytabotHvmT7AwkqSsQ=",
+			"origin": "github.com/bitrise-tools/go-steputils/vendor/github.com/bitrise-io/go-utils/command",
+			"path": "github.com/bitrise-io/go-utils/command",
+			"revision": "cecc766da84859e37e780d9d1c416f0f3993e6b1",
+			"revisionTime": "2019-04-15T09:31:55Z"
+		},
+		{
+			"checksumSHA1": "/vFXewl3N28XZQhr007bXSfeWeA=",
+			"origin": "github.com/bitrise-tools/go-steputils/vendor/github.com/bitrise-io/go-utils/errorutil",
+			"path": "github.com/bitrise-io/go-utils/errorutil",
+			"revision": "cecc766da84859e37e780d9d1c416f0f3993e6b1",
+			"revisionTime": "2019-04-15T09:31:55Z"
+		},
+		{
+			"checksumSHA1": "s+/BXmbp9BLi2RY9G8SmNhJN9cE=",
+			"path": "github.com/bitrise-io/go-utils/log",
+			"revision": "10ba6612803187a89b6935f06a617e9e1cd9d2bf",
+			"revisionTime": "2019-06-21T15:06:08Z"
+		},
+		{
+			"checksumSHA1": "K8m5mb07PZNIU60eBkYHn80q89M=",
+			"origin": "github.com/bitrise-tools/go-steputils/vendor/github.com/bitrise-io/go-utils/parseutil",
+			"path": "github.com/bitrise-io/go-utils/parseutil",
+			"revision": "cecc766da84859e37e780d9d1c416f0f3993e6b1",
+			"revisionTime": "2019-04-15T09:31:55Z"
+		},
+		{
+			"checksumSHA1": "yFao3g5b2xalWBhyTIhQuGm8wK0=",
+			"origin": "github.com/bitrise-tools/go-steputils/vendor/github.com/bitrise-io/go-utils/pathutil",
+			"path": "github.com/bitrise-io/go-utils/pathutil",
+			"revision": "cecc766da84859e37e780d9d1c416f0f3993e6b1",
+			"revisionTime": "2019-04-15T09:31:55Z"
+		},
+		{
+			"checksumSHA1": "dlqqG4+0TwaiYyXKZEBLA8SvzsU=",
+			"origin": "github.com/bitrise-tools/go-steputils/vendor/github.com/bitrise-io/go-utils/pointers",
+			"path": "github.com/bitrise-io/go-utils/pointers",
+			"revision": "cecc766da84859e37e780d9d1c416f0f3993e6b1",
+			"revisionTime": "2019-04-15T09:31:55Z"
+		},
+		{
+			"checksumSHA1": "5IRm15/vYJdX5pZr/A/QqtnYATs=",
+			"path": "github.com/bitrise-tools/go-steputils/stepconf",
+			"revision": "cecc766da84859e37e780d9d1c416f0f3993e6b1",
+			"revisionTime": "2019-04-15T09:31:55Z"
+		},
+		{
+			"checksumSHA1": "azC4JCYwo04lQcqklehYYVGEVc8=",
+			"path": "github.com/bitrise-tools/go-steputils/tools",
+			"revision": "cecc766da84859e37e780d9d1c416f0f3993e6b1",
+			"revisionTime": "2019-04-15T09:31:55Z"
+		}
+	],
+	"rootPath": "github.com/peartherapeutics/bitrise-step-api-build-trigger"
+}
