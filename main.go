@@ -1,29 +1,38 @@
 package main
 
 import (
-    "encoding/json"
+	"encoding/json"
 	"fmt"
+	"net/url"
 	"os"
-    "path"
-    "net/url"
+	"path"
 
-    "github.com/bitrise-io/go-utils/log"
+	"github.com/bitrise-io/go-utils/log"
 	"github.com/bitrise-tools/go-steputils/stepconf"
 	"github.com/bitrise-tools/go-steputils/tools"
+
+	"github.com/go-openapi/strfmt"
+
+	apiclient "github.com/peartherapeutics/bitrise-step-api-build-trigger/client"
+	"github.com/peartherapeutics/bitrise-step-api-build-trigger/client/builds"
+	"github.com/peartherapeutics/bitrise-step-api-build-trigger/models"
+
+	httptransport "github.com/go-openapi/runtime/client"
 )
 
 var debugMode bool
 
 // Config ...
 type Config struct {
-	AppPath   string          `env:"app_path,required"`
-	Token     stepconf.Secret `env:"appetize_token,required"`
-	PublicKey string          `env:"public_key"`
-	Verbose   bool            `env:"verbose,required"`
+	AppSlug string          `env:"triggered_app_slug,required"`
+	Token   stepconf.Secret `env:"bitrise_api_token,required"`
+	Branch  string          `env:"triggered_app_branch"`
+	Message string          `env:"trigger_message"`
+	Verbose bool            `env:"verbose,required"`
 }
 
 func main() {
-    var cfg Config
+	var cfg Config
 	if err := stepconf.Parse(&cfg); err != nil {
 		failf("Issue with input: %s", err)
 	}
@@ -36,9 +45,31 @@ func main() {
 
 	log.Infof("Checking provided file's platform")
 
-	fmt.Println("This is the value specified for the input 'example_step_input':", os.Getenv("example_step_input"))
+	/// API CLIENT
+	// create the API client
+	bitriseClient := apiclient.New(httptransport.New("", "", nil), strfmt.Default)
 
-    // Output section
+	// Create auth provider
+	apiKeyQueryAuth := httptransport.APIKeyAuth("Authorization", "header", string(cfg.Token))
+
+	// Trigger build
+	resp, err := bitriseClient.Builds.BuildTrigger(&builds.BuildTriggerParams{
+		AppSlug: cfg.AppSlug,
+		BuildParams: &models.V0BuildTriggerParams{
+			BuildParams: &models.V0BuildTriggerParamsBuildParams{
+				Branch:        cfg.Branch,
+				CommitMessage: cfg.Message,
+			},
+		},
+	}, apiKeyQueryAuth)
+
+	if err != nil {
+		log.Errorf("%s", err)
+	}
+	fmt.Printf("%#v\n", resp.Payload)
+	// END
+
+	// Output section
 	if err := tools.ExportEnvironmentWithEnvman("VERBOSE", "test exported value"); err != nil {
 		failf("Failed to generate output - %s", "VERBOSE")
 	}
