@@ -84,6 +84,16 @@ inputs:
       description: ""
       is_expand: true
       is_required: true
+  - triggered_workflow: "$BITRISE_API_BUILD_TRIGGER_STEP_TRIGGERED_WORKFLOW"
+    opts:
+      title: "Triggered Workflow ID"
+      summary: Workflow ID (name) you want to trigger. If empty, trigger map will be used instead.
+      description: |-
+        Workflow ID (name) you want to trigger. If empty, trigger map will be used instead.
+
+        See [Setting a workflow for the build on devcenter](https://devcenter.bitrise.io/api/build-trigger/#setting-a-workflow-for-the-build).
+      is_expand: true
+      is_required: false
   - trigger_message: "$BITRISE_API_BUILD_TRIGGER_STEP_MESSAGE"
     opts:
       title: "Triggered Build Message"
@@ -103,8 +113,23 @@ inputs:
         - "false"
 
 outputs:
-  - BITRISE_API_BUILD_TRIGGER_STEP_RESULT_SLUG:
+  - BITRISE_API_BUILD_TRIGGER_STEP_RESULT_BUILD_SLUG:
     opts:
       title: "Resulting Build Slug"
       summary: Build slug of the triggered build.
+      description: ""
+  - BITRISE_API_BUILD_TRIGGER_STEP_RESULT_BUILD_NUMBER:
+    opts:
+      title: "Resulting Build Number"
+      summary: Build number of the triggered build.
+      description: ""
+  - BITRISE_API_BUILD_TRIGGER_STEP_RESULT_BUILD_URL:
+    opts:
+      title: "Resulting Build URL"
+      summary: URL of the triggered build.
+      description: ""
+  - BITRISE_API_BUILD_TRIGGER_STEP_RESULT_TRIGGERED_WORKFLOW:
+    opts:
+      title: "Resulting triggered workflow"
+      summary: Workflow name that was triggered.
       description: ""
