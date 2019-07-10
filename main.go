@@ -1,17 +1,13 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"net/url"
 	"os"
-	"path"
+	"time"
 
 	"github.com/bitrise-io/go-utils/log"
 	"github.com/bitrise-tools/go-steputils/stepconf"
 	"github.com/bitrise-tools/go-steputils/tools"
-
-	"github.com/go-openapi/strfmt"
 
 	apiclient "github.com/peartherapeutics/bitrise-step-api-build-trigger/client"
 	"github.com/peartherapeutics/bitrise-step-api-build-trigger/client/builds"
@@ -26,7 +22,7 @@ var debugMode bool
 type Config struct {
 	AppSlug string          `env:"triggered_app_slug,required"`
 	Token   stepconf.Secret `env:"bitrise_api_token,required"`
-	Branch  string          `env:"triggered_app_branch"`
+	Branch  string          `env:"triggered_branch,required"`
 	Message string          `env:"trigger_message"`
 	Verbose bool            `env:"verbose,required"`
 }
@@ -43,28 +39,31 @@ func main() {
 	stepconf.Print(cfg)
 	fmt.Println()
 
-	log.Infof("Checking provided file's platform")
+	log.Infof("Preparing API request...")
 
 	/// API CLIENT
 	// create the API client
-	bitriseClient := apiclient.New(httptransport.New("", "", nil), strfmt.Default)
+	bitriseClient := apiclient.Default
 
 	// Create auth provider
 	apiKeyQueryAuth := httptransport.APIKeyAuth("Authorization", "header", string(cfg.Token))
 
-	// Trigger build
-	resp, err := bitriseClient.Builds.BuildTrigger(&builds.BuildTriggerParams{
+	buildTriggerParams := builds.BuildTriggerParams{
 		AppSlug: cfg.AppSlug,
 		BuildParams: &models.V0BuildTriggerParams{
 			BuildParams: &models.V0BuildTriggerParamsBuildParams{
-				Branch:        cfg.Branch,
 				CommitMessage: cfg.Message,
+				Branch:        cfg.Branch,
 			},
 		},
-	}, apiKeyQueryAuth)
+	}
+	buildTriggerParams.SetTimeout(60 * time.Second)
+
+	// Trigger build
+	resp, err := bitriseClient.Builds.BuildTrigger(&buildTriggerParams, apiKeyQueryAuth)
 
 	if err != nil {
-		log.Errorf("%s", err)
+		failf("%s", err)
 	}
 	fmt.Printf("%#v\n", resp.Payload)
 	// END
@@ -88,30 +87,8 @@ func main() {
 // -------------------------------------
 // -- Private methods
 
-func generateAppURL(publicKey string) string {
-	u := url.URL{
-		Scheme: "https",
-		Host:   "appetize.io",
-		Path:   path.Join("app", publicKey),
-	}
-	return u.String()
-}
-
 func failf(format string, v ...interface{}) {
 	log.Errorf(format, v...)
 	log.Warnf("For more details you can enable the debug logs by turning on the verbose step input.")
 	os.Exit(1)
-}
-
-func logDebugPretty(v interface{}) {
-	if !debugMode {
-		return
-	}
-
-	b, err := json.MarshalIndent(v, "", "  ")
-	if err != nil {
-		fmt.Println("error:", err)
-	}
-
-	log.Debugf("Response: %+v\n", string(b))
 }

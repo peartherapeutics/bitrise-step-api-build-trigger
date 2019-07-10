@@ -40,7 +40,12 @@ workflows:
           file if you would not specify another value.
         run_if: true
         inputs:
-        - example_step_input: Example Step Input's value
+        - bitrise_api_token: "$BITRISE_API_TOKEN"
+        - triggered_app_slug: "$BITRISE_API_BUILD_TRIGGER_STEP_APP_SLUG"
+        - triggered_branch: "$BITRISE_API_BUILD_TRIGGER_STEP_BRANCH"
+        - trigger_message: "$BITRISE_API_BUILD_TRIGGER_STEP_MESSAGE"
+        - verbose: "$BITRISE_API_BUILD_TRIGGER_VERBOSE"
+
     - script:
         inputs:
         - content: |
